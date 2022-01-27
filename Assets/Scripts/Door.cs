@@ -7,6 +7,7 @@ public class Door : MonoBehaviour
     public enum DoorState { Idle, Opening, Open, Closing }
     public DoorState state = DoorState.Idle;
     public float closeDelay = 0.5f;
+    public AudioClip doorSound;
 
     private Animator _animator;
     private Collider2D _collider2D;
@@ -50,6 +51,7 @@ public class Door : MonoBehaviour
     public void Open()
     {
         _animator.SetInteger("Index", 1); // Open
+        AudioSource.PlayClipAtPoint(doorSound, transform.position);
     }
 
     public void Close()

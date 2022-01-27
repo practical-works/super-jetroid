@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DoorSwitch : MonoBehaviour
 {
+    public AudioClip switchSound;
+
     private DoorTrigger _doorTrigger;
     private Animator _animator;
 
@@ -16,6 +18,7 @@ public class DoorSwitch : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collider)
     {
         _animator.SetInteger("Index", 1); // Down
+        AudioSource.PlayClipAtPoint(switchSound, transform.position);
     }
 
     void OnTriggerExit2D(Collider2D collider)
@@ -26,5 +29,6 @@ public class DoorSwitch : MonoBehaviour
         }
 
         _animator.SetInteger("Index", 2); // Up
+        AudioSource.PlayClipAtPoint(switchSound, transform.position);
     }
 }

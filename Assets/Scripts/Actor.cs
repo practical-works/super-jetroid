@@ -7,6 +7,10 @@ public class Actor : MonoBehaviour
     public Vector2 speed = new Vector2(10, 15);
     public Vector2 maxVelocity = new Vector2(3, 2);
     public float airSpeedXCoeff = 0.1f;
+    public AudioClip rightFootSound;
+    public AudioClip leftFootSound;
+    public AudioClip thudSound;
+    public AudioClip rocketSound;
 
     private bool _onAir;
     private Controller _controller;
@@ -24,7 +28,10 @@ public class Actor : MonoBehaviour
 
     void Update()
     {
-        Vector2 absVelocity = new Vector2(Mathf.Abs(_rigidbody2D.velocity.x), Mathf.Abs(_rigidbody2D.velocity.y));
+        Vector2 absVelocity = new Vector2(
+            Mathf.Abs(_rigidbody2D.velocity.x),
+            Mathf.Abs(_rigidbody2D.velocity.y)
+        );
         _onAir = (absVelocity.y != 0);
 
         if (_controller.direction.x != 0)
@@ -45,6 +52,7 @@ public class Actor : MonoBehaviour
 
         if (_controller.direction.y != 0)
         {
+            PlayRocketSound();
             if (absVelocity.y < maxVelocity.y)
             {
                 float yForce = _controller.direction.y * speed.y;
@@ -60,12 +68,6 @@ public class Actor : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider)
     {
-        if (_exploder == null)
-        {
-            Error.MissingComponent(this, typeof(Exploder));
-            return;
-        }
-
         if (collider.tag == "Deadly")
         {
             _exploder.Explode();
@@ -74,15 +76,47 @@ public class Actor : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (_exploder == null)
+        Vector2 absVelocity = new Vector2(
+            Mathf.Abs(_rigidbody2D.velocity.x),
+            Mathf.Abs(_rigidbody2D.velocity.y)
+        );
+
+        if (absVelocity.x == 0 || absVelocity.y == 0)
         {
-            Error.MissingComponent(this, typeof(Exploder));
-            return;
+            PlayThudFootSound();
         }
 
         if (collision.collider.tag == "Deadly")
         {
             _exploder.Explode();
+        }
+    }
+
+    void PlayRightFootSound()
+    {
+        AudioSource.PlayClipAtPoint(rightFootSound, transform.position);
+    }
+
+    void PlayLeftFootSound()
+    {
+        AudioSource.PlayClipAtPoint(leftFootSound, transform.position);
+    }
+
+    void PlayThudFootSound()
+    {
+        AudioSource.PlayClipAtPoint(thudSound, transform.position);
+    }
+
+    void PlayRocketSound()
+    {
+        if (!GameObject.Find("RocketSoundPlayback"))
+        {
+            GameObject gameObj = new GameObject("RocketSoundPlayback");
+            AudioSource audioSrc = gameObj.AddComponent<AudioSource>();
+            audioSrc.clip = rocketSound;
+            audioSrc.volume = 0.1f;
+            audioSrc.Play();
+            Destroy(gameObj, audioSrc.clip.length);
         }
     }
 }

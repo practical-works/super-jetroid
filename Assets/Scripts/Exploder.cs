@@ -6,16 +6,12 @@ public class Exploder : MonoBehaviour
 {
     public ExplosionParticle particle;
     public int particlesCount = 5;
+    public AudioClip explosionSound;
 
     public void Explode()
     {
-        if (particle == null)
-        {
-            Error.MissingPropertyValue(this, "particle");
-            return;
-        }
-
         Destroy(gameObject);
+        AudioSource.PlayClipAtPoint(explosionSound, transform.position);
 
         for (int i = 0; i < particlesCount; i++)
         {

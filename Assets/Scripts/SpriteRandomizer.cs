@@ -10,11 +10,6 @@ public class SpriteRandomizer : MonoBehaviour
 
     void Start()
     {
-        if (string.IsNullOrEmpty(resourceName) || resourceName.Trim() == string.Empty)
-        {
-            Error.MissingPropertyValue(this, "resourceName");
-        }
-
         sprites = Resources.LoadAll<Sprite>(resourceName);
 
         if (sprites != null && sprites.Length != 0)

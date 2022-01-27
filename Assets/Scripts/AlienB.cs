@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AlienB : MonoBehaviour
 {
+    public AudioClip attackSound;
+
     private Animator _animator;
     private bool _readyToAttack;
 
@@ -23,6 +25,17 @@ public class AlienB : MonoBehaviour
             else
             {
                 _animator.SetInteger("Index", 1); // Attack
+            }
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.tag == "Player")
+        {
+            if (!_readyToAttack)
+            {
+                AudioSource.PlayClipAtPoint(attackSound, transform.position);
             }
         }
     }

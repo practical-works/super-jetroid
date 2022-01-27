@@ -6,6 +6,7 @@ public class AlienC : MonoBehaviour
 {
     public float attackDelay = 3f;
     public Projectile projectile;
+    public AudioClip attackSound;
 
     private Animator _animator;
 
@@ -27,6 +28,7 @@ public class AlienC : MonoBehaviour
     {
         yield return new WaitForSeconds(attackDelay);
         _animator.SetInteger("Index", 1); // Attack
+        AudioSource.PlayClipAtPoint(attackSound, transform.position);
         StartCoroutine(Attack());
     }
 
