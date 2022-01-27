@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-    private Animator animator;
-    private new Collider2D collider2D;
-
     public enum DoorState { Idle, Opening, Open, Closing }
     public DoorState state = DoorState.Idle;
     public float closeDelay = 0.5f;
 
+    private Animator _animator;
+    private Collider2D _collider2D;
+
     void Start()
     {
-        animator = GetComponent<Animator>();
-        collider2D = GetComponent<Collider2D>();
+        _animator = GetComponent<Animator>();
+        _collider2D = GetComponent<Collider2D>();
     }
 
     void OnOpenStart()
@@ -39,27 +39,27 @@ public class Door : MonoBehaviour
 
     void EnableCollider2D()
     {
-        collider2D.enabled = true;
+        _collider2D.enabled = true;
     }
 
     void DisableCollider2D()
     {
-        collider2D.enabled = false;
-    }
-
-    IEnumerator CloseNow()
-    {
-        yield return new WaitForSeconds(closeDelay);
-        animator.SetInteger("Index", 2);
+        _collider2D.enabled = false;
     }
 
     public void Open()
     {
-        animator.SetInteger("Index", 1);
+        _animator.SetInteger("Index", 1); // Open
     }
 
     public void Close()
     {
-        StartCoroutine(CloseNow());
+        StartCoroutine(CloseAfterDelay());
+    }
+
+    IEnumerator CloseAfterDelay()
+    {
+        yield return new WaitForSeconds(closeDelay);
+        _animator.SetInteger("Index", 2); // Closed
     }
 }

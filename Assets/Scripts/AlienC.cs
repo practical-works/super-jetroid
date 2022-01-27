@@ -7,37 +7,31 @@ public class AlienC : MonoBehaviour
     public float attackDelay = 3f;
     public Projectile projectile;
 
-    private Animator animator;
-    private float _elapsedTime = 0;
+    private Animator _animator;
 
     void Start()
     {
-        animator = GetComponent<Animator>();
+        _animator = GetComponent<Animator>();
         if (attackDelay > 0)
         {
-            StartCoroutine(OnAttack());
+            StartCoroutine(Attack());
         }
     }
 
     void Update()
     {
-        animator.SetInteger("Index", 0); // Idle
-        _elapsedTime += Time.deltaTime;
+        _animator.SetInteger("Index", 0); // Idle
     }
 
-    IEnumerator OnAttack()
+    IEnumerator Attack()
     {
         yield return new WaitForSeconds(attackDelay);
-        animator.SetInteger("Index", 1); // Attack
-        StartCoroutine(OnAttack());
-        print(_elapsedTime + " seconds");
+        _animator.SetInteger("Index", 1); // Attack
+        StartCoroutine(Attack());
     }
 
-    void OnShoot()
+    void CreateProjectile()
     {
-        if (projectile != null)
-        {
-            Projectile newProjectile = Instantiate(projectile, transform.position, Quaternion.identity);
-        }
+        Instantiate(projectile, transform.position, Quaternion.identity);
     }
 }

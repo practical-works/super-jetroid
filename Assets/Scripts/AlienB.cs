@@ -4,26 +4,25 @@ using UnityEngine;
 
 public class AlienB : MonoBehaviour
 {
-    private Animator animator;
-    private bool readyToAttack;
+    private Animator _animator;
+    private bool _readyToAttack;
 
     void Start()
     {
-        animator = GetComponent<Animator>();
+        _animator = GetComponent<Animator>();
     }
 
     void OnTriggerStay2D(Collider2D collider)
     {
         if (collider.tag == "Player")
         {
-            if (readyToAttack)
+            if (_readyToAttack)
             {
-                Actor actor = collider.GetComponent<Actor>();
-                actor.OnExplode();
+                collider.GetComponent<Exploder>().Explode();
             }
             else
             {
-                animator.SetInteger("Index", 1); // Attack
+                _animator.SetInteger("Index", 1); // Attack
             }
         }
     }
@@ -32,13 +31,13 @@ public class AlienB : MonoBehaviour
     {
         if (collider.tag == "Player")
         {
-            readyToAttack = false;
-            animator.SetInteger("Index", 0); // Idle
+            _readyToAttack = false;
+            _animator.SetInteger("Index", 0); // Idle
         }
     }
 
     void Attack()
     {
-        readyToAttack = true;
+        _readyToAttack = true;
     }
 }

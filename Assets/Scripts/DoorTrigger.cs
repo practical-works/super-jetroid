@@ -9,44 +9,46 @@ public class DoorTrigger : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider)
     {
-        if (doors != null)
+        foreach (Door door in doors)
         {
-            foreach (Door door in doors)
+            if (door != null)
             {
-                if (door != null)
-                {
-                    door.Open();
-                }
+                door.Open();
             }
         }
     }
 
     void OnTriggerExit2D(Collider2D collider)
     {
-        if (!sticky && doors != null)
+        if (sticky)
         {
-            foreach (Door door in doors)
+            return;
+        }
+
+        foreach (Door door in doors)
+        {
+            if (door != null)
             {
-                if (door != null)
-                {
-                    door.Close();
-                }
+                door.Close();
             }
         }
     }
 
     void OnDrawGizmos()
     {
-        Gizmos.color = sticky ? Color.red : Color.green;
-        if (doors != null)
+        if (doors == null || doors.Length == 0)
         {
-            foreach (Door door in doors)
+            return;
+        }
+
+        Gizmos.color = sticky ? Color.red : Color.green;
+
+        foreach (Door door in doors)
+        {
+            if (door != null)
             {
-                if (door != null)
-                {
-                    Gizmos.DrawLine(transform.position, door.transform.position);
-                    Gizmos.DrawWireCube(door.transform.position, door.GetComponent<SpriteRenderer>().size);
-                }
+                Gizmos.DrawLine(transform.position, door.transform.position);
+                Gizmos.DrawWireCube(door.transform.position, door.GetComponent<SpriteRenderer>().size);
             }
         }
     }
