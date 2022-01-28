@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Actor : MonoBehaviour
 {
-    public Vector2 speed = new Vector2(10, 15);
-    public Vector2 maxVelocity = new Vector2(3, 2);
+    public Vector2 speed = new Vector2(10f, 15f);
+    public Vector2 maxVelocity = new Vector2(3f, 2f);
     public float airSpeedXCoeff = 0.1f;
     public AudioClip rightFootSound;
     public AudioClip leftFootSound;
